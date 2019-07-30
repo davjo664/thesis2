@@ -16,7 +16,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, { useReducer, useEffect, useState } from 'react'
+import React from 'react'
 import {shape, func, string} from 'prop-types'
 import _ from 'underscore'
 import ScreenReaderContent from '@instructure/ui-a11y/lib/components/ScreenReaderContent'
@@ -24,102 +24,121 @@ import UsersList from './UsersList'
 import UsersToolbar from './UsersToolbar'
 import SearchMessage from './SearchMessage'
 import UserActions from '../actions/UserActions'
-import UsersPaneContext from '../context/userspane-context'
-import rootReducer from '../reducers/rootReducer';
-import initialState from '../store/initialState';
 
 const MIN_SEARCH_LENGTH = 3
 export const SEARCH_DEBOUNCE_TIME = 750
 
-const UsersPane = props => {
-  const [state, dispatch] = useReducer(rootReducer, initialState);
-  const [srMessageDisplayed, setSrMessageDisplayed] = useState(false);
-
-  useEffect(() => {
-    const {search_term, role_filter_id} = {...UsersToolbar.defaultProps, ...props.queryParams}
-    dispatch(UserActions.updateSearchFilter({search_term, role_filter_id}));
-    UserActions.applySearchFilter(MIN_SEARCH_LENGTH, state.searchFilter)(dispatch);
-  }, [])
-
-  useEffect(() => {
-    debouncedDispatchApplySearchFilter()
-  }, [ state.searchFilter ])
-
-  const handleApplyingSearchFilter = () => {
-    UserActions.applySearchFilter(MIN_SEARCH_LENGTH, state.searchFilter)(dispatch)
-    updateQueryString()
+export default class UsersPane extends React.Component {
+  static propTypes = {
+    store: shape({
+      getState: func.isRequired,
+      dispatch: func.isRequired,
+      subscribe: func.isRequired
+    }).isRequired,
+    roles: UsersToolbar.propTypes.roles,
+    onUpdateQueryParams: func.isRequired,
+    queryParams: shape({
+      page: string,
+      search_term: string,
+      role_filter_id: string
+    }).isRequired
   }
 
-  const updateQueryString = () => {
-    const searchFilter = state.searchFilter
-    props.onUpdateQueryParams(searchFilter)
+  constructor(props) {
+    super(props)
+    this.state = {
+      userList: props.store.getState().userList,
+      srMessageDisplayed: false
+    }
   }
 
-  const debouncedDispatchApplySearchFilter = _.debounce(
-    handleApplyingSearchFilter,
+  componentDidMount = () => {
+    this.unsubscribe = this.props.store.subscribe(this.handleStateChange)
+
+    // make page reflect what the querystring params asked for
+    const {search_term, role_filter_id} = {...UsersToolbar.defaultProps, ...this.props.queryParams}
+    this.props.store.dispatch(UserActions.updateSearchFilter({search_term, role_filter_id}))
+
+    this.props.store.dispatch(UserActions.applySearchFilter(MIN_SEARCH_LENGTH))
+  }
+
+  componentWillUnmount = () => {
+    this.unsubscribe()
+  }
+
+  handleStateChange = () => {
+    this.setState({userList: this.props.store.getState().userList})
+  }
+
+  handleApplyingSearchFilter = () => {
+    this.props.store.dispatch(UserActions.applySearchFilter(MIN_SEARCH_LENGTH))
+    this.updateQueryString()
+  }
+
+  updateQueryString = () => {
+    const searchFilter = this.props.store.getState().userList.searchFilter
+    this.props.onUpdateQueryParams(searchFilter)
+  }
+
+  debouncedDispatchApplySearchFilter = _.debounce(
+    this.handleApplyingSearchFilter,
     SEARCH_DEBOUNCE_TIME
   )
 
-  const handleUpdateSearchFilter = searchFilter => {
-    dispatch(UserActions.updateSearchFilter({page: null, ...searchFilter}));
+  handleUpdateSearchFilter = searchFilter => {
+    this.props.store.dispatch(UserActions.updateSearchFilter({page: null, ...searchFilter}))
+    this.debouncedDispatchApplySearchFilter()
   }
 
-  const handleSubmitEditUserForm = (attributes, id) => {
-    handleApplyingSearchFilter()
+  handleSubmitEditUserForm = (attributes, id) => {
+    this.handleApplyingSearchFilter()
   }
 
-  const handleSetPage = page => {
-    dispatch(UserActions.updateSearchFilter({page}))
-    handleApplyingSearchFilter()
+  handleSetPage = page => {
+    this.props.store.dispatch(UserActions.updateSearchFilter({page}))
+    this.handleApplyingSearchFilter()
   }
 
-  
-  const {links, accountId, users, isLoading, errors, searchFilter} = state
-  return (
-    <div>
-      <ScreenReaderContent>
-        <h1>{'People'}</h1>
-      </ScreenReaderContent>
-      <UsersPaneContext.Provider value={{
-        handleSubmitEditUserForm: handleSubmitEditUserForm,
-        onUpdateFilters: handleUpdateSearchFilter
-      }}>
-      {
-        <UsersToolbar
-          onApplyFilters={handleApplyingSearchFilter}
-          errors={errors}
-          {...searchFilter}
-          toggleSRMessage={(show = false) => {
-            setSrMessageDisplayed(show);
-          }}
-        />
-      }
+  render() {
+    const {links, accountId, users, isLoading, errors, searchFilter} = this.state.userList
+    return (
+      <div>
+        <ScreenReaderContent>
+          <h1>{'People'}</h1>
+        </ScreenReaderContent>
 
-      {!_.isEmpty(users) &&
-        !isLoading && (
-          <UsersList
-            searchFilter={state.searchFilter}
-            users={users}
+        {
+          <UsersToolbar
+            onUpdateFilters={this.handleUpdateSearchFilter}
+            onApplyFilters={this.handleApplyingSearchFilter}
+            errors={errors}
+            {...searchFilter}
+            accountId={accountId.toString()}
+            roles={this.props.roles}
+            toggleSRMessage={(show = false) => {
+              this.setState({srMessageDisplayed: show})
+            }}
           />
-        )}
-      <SearchMessage
-        collection={{data: users, loading: isLoading, links}}
-        setPage={handleSetPage}
-        noneFoundMessage={'No users found'}
-        dataType="User"
-      />
-      </UsersPaneContext.Provider>
-    </div>
-  )
-}
+        }
 
-UsersPane.propTypes = {
-  onUpdateQueryParams: func.isRequired,
-  queryParams: shape({
-    page: string,
-    search_term: string,
-    role_filter_id: string
-  }).isRequired
+        {!_.isEmpty(users) &&
+          !isLoading && (
+            <UsersList
+              searchFilter={this.state.userList.searchFilter}
+              onUpdateFilters={this.handleUpdateSearchFilter}
+              accountId={accountId.toString()}
+              users={users}
+              handleSubmitEditUserForm={this.handleSubmitEditUserForm}
+              permissions={this.state.userList.permissions}
+            />
+          )}
+        <SearchMessage
+          collection={{data: users, loading: isLoading, links}}
+          setPage={this.handleSetPage}
+          noneFoundMessage={'No users found'}
+          dataType="User"
+        />
+      </div>
+    )
+  }
 }
-
-export default UsersPane;

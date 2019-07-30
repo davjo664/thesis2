@@ -16,15 +16,17 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-export default {
-  userList: {
-    users: [],
-    isLoading: true,
-    errors: {search_term: ''},
-    next: undefined,
-    searchFilter: {search_term: ''},
-    permissions: window.ENV.PERMISSIONS,
-    accountId: window.ENV.ACCOUNT_ID,
-    rootAccountId: window.ENV.ROOT_ACCOUNT_ID
-  }
+import {createStore, applyMiddleware} from 'redux'
+import ReduxThunk from 'redux-thunk'
+import rootReducer from '../reducers/rootReducer'
+
+const createStoreWithMiddleware = applyMiddleware(ReduxThunk)(createStore)
+
+function configureStore(initialState) {
+  return createStoreWithMiddleware(rootReducer, 
+    initialState,
+    window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__() //Redux devtools for chrome
+    )
 }
+
+export default configureStore

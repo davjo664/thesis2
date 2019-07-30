@@ -16,7 +16,7 @@
  * with this program. If not, see <http://www.gnu.org/licenses/>.
  */
 
-import React, { useState, useEffect } from 'react'
+import React from 'react'
 import {bool, func, shape, string, element, oneOf} from 'prop-types'
 import Avatar from '@instructure/ui-elements/lib/components/Avatar'
 import Button from '@instructure/ui-buttons/lib/components/Button'
@@ -131,24 +131,48 @@ function preventDefault (fn) {
   }
 }
 
-const CreateOrUpdateUserModal = props => {
-  const [state, setState] = useState(initialState);
+export default class CreateOrUpdateUserModal extends React.Component {
+  static propTypes = {
+    // whatever you pass as the child, when clicked, will open the dialog
+    children: element.isRequired,
+    createOrUpdate: oneOf(['create', 'update']).isRequired,
+    url: string.isRequired,
+    user: shape({
+      name: string.isRequired,
+      sortable_name: string,
+      short_name: string,
+      email: string,
+      time_zone: string
+    }),
+    customized_login_handle_name: string,
+    delegated_authentication: bool.isRequired,
+    showSIS: bool.isRequired,
+    afterSave: func.isRequired
+  }
 
-  useEffect(() => {
-    if (props.createOrUpdate === 'update') {
+  static defaultProps = {
+    customized_login_handle_name: window.ENV.customized_login_handle_name,
+    delegated_authentication: window.ENV.delegated_authentication,
+    showSIS: window.ENV.SHOW_SIS_ID_IN_NEW_USER_FORM
+  }
+
+  state = {...initialState}
+
+  componentWillMount() {
+    if (this.props.createOrUpdate === 'update') {
       // only get the attributes from the user that we are actually going to show in the <input>s
       // and send to the server. Because if we send the server extraneous attributes like user[id]
       // it throws 401 errors
-      const userDataFromProps = getInputFields().reduce((memo, {name}) => {
+      const userDataFromProps = this.getInputFields().reduce((memo, {name}) => {
         const key = name.match(/user\[(.*)\]/)[1] // extracts 'short_name' from 'user[short_name]'
-        return {...memo, [key]: props.user[key]}
+        return {...memo, [key]: this.props.user[key]}
       }, {})
-      setState(update(state, {data: {user: {$set: userDataFromProps}}}))
+      this.setState(update(this.state, {data: {user: {$set: userDataFromProps}}}))
     }
-  }, []);
+  }
 
-  const onChange = (field, value) => {
-    setState(prevState => {
+  onChange = (field, value) => {
+    this.setState(prevState => {
       let newState = update(prevState, {
         data: unflatten({[field]: {$set: value}}),
         errors: {$set: {}}
@@ -171,12 +195,12 @@ const CreateOrUpdateUserModal = props => {
     })
   }
 
-  const close = () => setState({...state, open: false})
+  close = () => this.setState({open: false})
 
-  const onSubmit = () => {
-    if (!isEmpty(state.errors)) return
-    const method = {create: 'POST', update: 'PUT'}[props.createOrUpdate]
-    axios({url: props.url, method, data: state.data}).then(
+  onSubmit = () => {
+    if (!isEmpty(this.state.errors)) return
+    const method = {create: 'POST', update: 'PUT'}[this.props.createOrUpdate]
+    axios({url: this.props.url, method, data: this.state.data}).then(
       response => {
         const getUserObj = o => (o.user ? getUserObj(o.user) : o)
         const user = getUserObj(response.data)
@@ -188,20 +212,20 @@ const CreateOrUpdateUserModal = props => {
             `*${userName}* saved successfully!`
         )
 
-        setState({...initialState})
-        if (props.afterSave) props.afterSave(response)
+        this.setState({...initialState})
+        if (this.props.afterSave) this.props.afterSave(response)
       },
       ({response}) => {
         const errors = response.data.errors
         $.flashError('Something went wrong saving user details.')
-        setState({errors})
+        this.setState({errors})
       }
     )
   }
 
-  const getInputFields = () => {
+  getInputFields = () => {
     const showCustomizedLoginId =
-      props.customized_login_handle_name || props.delegated_authentication
+      this.props.customized_login_handle_name || this.props.delegated_authentication
     return [
       {
         name: 'user[name]',
@@ -221,13 +245,13 @@ const CreateOrUpdateUserModal = props => {
       }
     ]
       .concat(
-        props.createOrUpdate === 'create'
+        this.props.createOrUpdate === 'create'
           ? [
               {
                 name: 'pseudonym[unique_id]',
-                label: props.customized_login_handle_name || 'Email',
-                required: props.customized_login_handle_name
-                  ? `${props.customized_login_handle_name} is required`
+                label: this.props.customized_login_handle_name || 'Email',
+                required: this.props.customized_login_handle_name
+                  ? `${this.props.customized_login_handle_name} is required`
                   : 'Email is required'
               },
               showCustomizedLoginId && {
@@ -235,7 +259,7 @@ const CreateOrUpdateUserModal = props => {
                 label: 'Email',
                 required: 'Email is required'
               },
-              props.showSIS && {
+              this.props.showSIS && {
                 name: 'pseudonym[sis_user_id]',
                 label: 'SIS ID'
               },
@@ -260,23 +284,23 @@ const CreateOrUpdateUserModal = props => {
       .filter(Boolean)
   }
 
-  return (
+  render = () => (
     <span>
       <InstuiModal
         as="form"
-        onSubmit={preventDefault(onSubmit)}
-        open={state.open}
-        onDismiss={close}
+        onSubmit={preventDefault(this.onSubmit)}
+        open={this.state.open}
+        onDismiss={this.close}
         size="small"
         label={
-          props.createOrUpdate === 'create' ? (
+          this.props.createOrUpdate === 'create' ? (
             'Add a New User'
           ) : (
             <span>
               <Avatar
                 size="small"
-                name={state.data.user.name}
-                src={props.user.avatar_url}
+                name={this.state.data.user.name}
+                src={this.props.user.avatar_url}
               />{' '}
               {'Edit User Details'}
             </span>
@@ -285,21 +309,21 @@ const CreateOrUpdateUserModal = props => {
       >
         <ModalBody>
           <FormFieldGroup layout="stacked" rowSpacing="small" description="">
-            {getInputFields().map(({name, label, hint, required, Component = TextInput}) => (
+            {this.getInputFields().map(({name, label, hint, required, Component = TextInput}) => (
               <Component
                 key={name}
                 label={label}
-                value={get(state.data, name)}
-                checked={get(state.data, name)}
+                value={get(this.state.data, name)}
+                checked={get(this.state.data, name)}
                 onChange={e =>
-                  onChange(
+                  this.onChange(
                     name,
                     e.target.type === 'checkbox' ? e.target.checked : e.target.value
                   )
                 }
                 required={!!required}
                 layout="inline"
-                messages={(state.errors[name] || [])
+                messages={(this.state.errors[name] || [])
                   .map(errMsg => ({type: 'error', text: errMsg}))
                   .concat(hint && {type: 'hint', text: hint})
                   .filter(Boolean)}
@@ -308,47 +332,21 @@ const CreateOrUpdateUserModal = props => {
           </FormFieldGroup>
         </ModalBody>
         <ModalFooter>
-          <Button onClick={close}>{'Cancel'}</Button> &nbsp;
+          <Button onClick={this.close}>{'Cancel'}</Button> &nbsp;
           <Button type="submit" variant="primary">
-            {props.createOrUpdate === 'create' ? 'Add User' : 'Save'}
+            {this.props.createOrUpdate === 'create' ? 'Add User' : 'Save'}
           </Button>
         </ModalFooter>
       </InstuiModal>
-      {React.Children.map(props.children, child =>
+      {React.Children.map(this.props.children, child =>
         // when you click whatever is the child element to this, open the modal
         React.cloneElement(child, {
           onClick: (...args) => {
             if (child.props.onClick) child.props.onClick(...args)
-            setState({...state, open: true})
+            this.setState({open: true})
           }
         })
       )}
     </span>
   )
 }
-
-CreateOrUpdateUserModal.propTypes = {
-  // whatever you pass as the child, when clicked, will open the dialog
-  children: element.isRequired,
-  createOrUpdate: oneOf(['create', 'update']).isRequired,
-  url: string.isRequired,
-  user: shape({
-    name: string.isRequired,
-    sortable_name: string,
-    short_name: string,
-    email: string,
-    time_zone: string
-  }),
-  customized_login_handle_name: string,
-  delegated_authentication: bool.isRequired,
-  showSIS: bool.isRequired,
-  afterSave: func.isRequired
-}
-
-CreateOrUpdateUserModal.defaultProps = {
-  customized_login_handle_name: window.ENV.customized_login_handle_name,
-  delegated_authentication: window.ENV.delegated_authentication,
-  showSIS: window.ENV.SHOW_SIS_ID_IN_NEW_USER_FORM
-}
-
-export default CreateOrUpdateUserModal;
