@@ -773,6 +773,12 @@
   dependencies:
     regenerator-runtime "^0.13.2"
 
+"@babel/runtime@^7.5.0", "@babel/runtime@^7.6.3", "@babel/runtime@^7.7.2":
+  version "7.7.7"
+  resolved "https://registry.yarnpkg.com/@babel/runtime/-/runtime-7.7.7.tgz#194769ca8d6d7790ec23605af9ee3e42a0aa79cf"
+  dependencies:
+    regenerator-runtime "^0.13.2"
+
 "@babel/template@^7.1.0", "@babel/template@^7.4.0", "@babel/template@^7.4.4":
   version "7.4.4"
   resolved "https://registry.yarnpkg.com/@babel/template/-/template-7.4.4.tgz#f4b88d1225689a08f5bc3a17483545be9e4ed237"
@@ -818,6 +824,16 @@
   version "9.0.1"
   resolved "https://registry.yarnpkg.com/@csstools/normalize.css/-/normalize.css-9.0.1.tgz#c27b391d8457d1e893f1eddeaf5e5412d12ffbb5"
 
+"@emotion/is-prop-valid@^0.8.3":
+  version "0.8.6"
+  resolved "https://registry.yarnpkg.com/@emotion/is-prop-valid/-/is-prop-valid-0.8.6.tgz#4757646f0a58e9dec614c47c838e7147d88c263c"
+  dependencies:
+    "@emotion/memoize" "0.7.4"
+
+"@emotion/memoize@0.7.4":
+  version "0.7.4"
+  resolved "https://registry.yarnpkg.com/@emotion/memoize/-/memoize-0.7.4.tgz#19bf0f5af19149111c40d98bb0cf82119f5d9eeb"
+
 "@hapi/address@2.x.x":
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/@hapi/address/-/address-2.0.0.tgz#9f05469c88cb2fd3dcd624776b54ee95c312126a"
@@ -840,6 +856,13 @@
   dependencies:
     "@hapi/hoek" "6.x.x"
 
+"@instructure/canvas-theme@^6.4.0":
+  version "6.16.0"
+  resolved "https://registry.yarnpkg.com/@instructure/canvas-theme/-/canvas-theme-6.16.0.tgz#2b2a1cee4674bfde733d6f15f19169608b94a3c8"
+  dependencies:
+    "@babel/runtime" "^7.5.0"
+    "@instructure/ui-themeable" "^6.16.0"
+
 "@instructure/console@^5.52.3":
   version "5.52.3"
   resolved "https://registry.yarnpkg.com/@instructure/console/-/console-5.52.3.tgz#b3eba8c535010d57bff18bd5c1d18f1cf779023f"
@@ -847,6 +870,14 @@
     "@babel/helper-annotate-as-pure" "^7.0.0"
     "@babel/helper-module-imports" "^7.0.0"
     babel-plugin-macros "^2.5.1"
+
+"@instructure/console@^6.16.0":
+  version "6.16.0"
+  resolved "https://registry.yarnpkg.com/@instructure/console/-/console-6.16.0.tgz#2a4fd3abb610d73ec9c63dbf5bdd993b927e8e23"
+  dependencies:
+    "@babel/helper-annotate-as-pure" "^7.0.0"
+    "@babel/helper-module-imports" "^7.0.0"
+    babel-plugin-macros "^2.6.1"
 
 "@instructure/debounce@^5.52.3":
   version "5.52.3"
@@ -959,6 +990,13 @@
     keycode "^2"
     prop-types "^15"
 
+"@instructure/ui-color-utils@^6.16.0":
+  version "6.16.0"
+  resolved "https://registry.yarnpkg.com/@instructure/ui-color-utils/-/ui-color-utils-6.16.0.tgz#e12ad28e4e187d7c48332a1b17ba305d9565537e"
+  dependencies:
+    "@babel/runtime" "^7.5.0"
+    tinycolor2 "^1.4.1"
+
 "@instructure/ui-container@^5.52.3":
   version "5.52.3"
   resolved "https://registry.yarnpkg.com/@instructure/ui-container/-/ui-container-5.52.3.tgz#0c60a0c16ada533d20f119673c949094aab9c427"
@@ -1006,6 +1044,19 @@
   resolved "https://registry.yarnpkg.com/@instructure/ui-decorator/-/ui-decorator-5.52.3.tgz#1f715000cd6043d5abd87d1684c687f58699e3c6"
   dependencies:
     "@babel/runtime" "^7"
+
+"@instructure/ui-decorator@^6.16.0":
+  version "6.16.0"
+  resolved "https://registry.yarnpkg.com/@instructure/ui-decorator/-/ui-decorator-6.16.0.tgz#94b576e11ac72e175271d910a91155c5d119ae8b"
+  dependencies:
+    "@babel/runtime" "^7.5.0"
+
+"@instructure/ui-dom-utils@^6.16.0":
+  version "6.16.0"
+  resolved "https://registry.yarnpkg.com/@instructure/ui-dom-utils/-/ui-dom-utils-6.16.0.tgz#ab915c3245c322054e61dd21c078f4bd143ab64c"
+  dependencies:
+    "@babel/runtime" "^7.5.0"
+    "@instructure/console" "^6.16.0"
 
 "@instructure/ui-editable@^5":
   version "5.52.3"
@@ -1262,11 +1313,31 @@
     "@babel/runtime" "^7"
     prop-types ">= 15.7.0"
 
+"@instructure/ui-react-utils@^6.16.0":
+  version "6.16.0"
+  resolved "https://registry.yarnpkg.com/@instructure/ui-react-utils/-/ui-react-utils-6.16.0.tgz#d3f2ea8aebffdf5917408f53886fced305dd37c7"
+  dependencies:
+    "@babel/runtime" "^7.5.0"
+    "@emotion/is-prop-valid" "^0.8.3"
+    "@instructure/console" "^6.16.0"
+    "@instructure/ui-decorator" "^6.16.0"
+    "@instructure/ui-dom-utils" "^6.16.0"
+    "@instructure/ui-utils" "^6.16.0"
+    prop-types "^15"
+    react-lifecycles-compat "^3.0.4"
+
 "@instructure/ui-stylesheet@^5.52.3":
   version "5.52.3"
   resolved "https://registry.yarnpkg.com/@instructure/ui-stylesheet/-/ui-stylesheet-5.52.3.tgz#4f35efb7ed6ceb3442a5efbf9ce80d9916e46322"
   dependencies:
     "@babel/runtime" "^7"
+    glamor "^2.20.40"
+
+"@instructure/ui-stylesheet@^6.16.0":
+  version "6.16.0"
+  resolved "https://registry.yarnpkg.com/@instructure/ui-stylesheet/-/ui-stylesheet-6.16.0.tgz#d366f276bded3627f9c0652ff331ed7bd7ed0d4a"
+  dependencies:
+    "@babel/runtime" "^7.5.0"
     glamor "^2.20.40"
 
 "@instructure/ui-svg-images@^5", "@instructure/ui-svg-images@^5.52.3":
@@ -1334,6 +1405,21 @@
     prop-types "^15"
     tinycolor2 "^1.4.1"
 
+"@instructure/ui-themeable@^6.16.0":
+  version "6.16.0"
+  resolved "https://registry.yarnpkg.com/@instructure/ui-themeable/-/ui-themeable-6.16.0.tgz#9391cfe90cf1726262e5b15d74607a3b4f3c0562"
+  dependencies:
+    "@babel/runtime" "^7.5.0"
+    "@instructure/console" "^6.16.0"
+    "@instructure/ui-color-utils" "^6.16.0"
+    "@instructure/ui-decorator" "^6.16.0"
+    "@instructure/ui-dom-utils" "^6.16.0"
+    "@instructure/ui-react-utils" "^6.16.0"
+    "@instructure/ui-stylesheet" "^6.16.0"
+    "@instructure/ui-utils" "^6.16.0"
+    "@instructure/uid" "^6.16.0"
+    prop-types "^15"
+
 "@instructure/ui-themes@^5":
   version "5.52.3"
   resolved "https://registry.yarnpkg.com/@instructure/ui-themes/-/ui-themes-5.52.3.tgz#fc3c8a3b717ee3b094b4f0fb55009b25c33551b7"
@@ -1394,11 +1480,28 @@
     numeral "^2"
     prop-types "^15"
 
+"@instructure/ui-utils@^6.16.0":
+  version "6.16.0"
+  resolved "https://registry.yarnpkg.com/@instructure/ui-utils/-/ui-utils-6.16.0.tgz#3c85225cb2376664e0420b91de5a5cf6ccf4408d"
+  dependencies:
+    "@babel/runtime" "^7.5.0"
+    "@instructure/console" "^6.16.0"
+    "@instructure/ui-dom-utils" "^6.16.0"
+    bowser "^1.9.4"
+    fast-deep-equal "^2"
+    keycode "^2"
+
 "@instructure/uid@^5.52.0", "@instructure/uid@^5.52.3":
   version "5.52.3"
   resolved "https://registry.yarnpkg.com/@instructure/uid/-/uid-5.52.3.tgz#4a0f2a739598cef40feca6b18fcb8ce795f82f76"
   dependencies:
     "@babel/runtime" "^7"
+
+"@instructure/uid@^6.16.0":
+  version "6.16.0"
+  resolved "https://registry.yarnpkg.com/@instructure/uid/-/uid-6.16.0.tgz#99a2a5e9f67fa20e6fdc30ddbf72a2a9b7bbdd02"
+  dependencies:
+    "@babel/runtime" "^7.5.0"
 
 "@jest/console@^24.7.1":
   version "24.7.1"
@@ -1687,6 +1790,10 @@
 "@types/node@*":
   version "12.0.0"
   resolved "https://registry.yarnpkg.com/@types/node/-/node-12.0.0.tgz#d11813b9c0ff8aaca29f04cbc12817f4c7d656e5"
+
+"@types/parse-json@^4.0.0":
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/@types/parse-json/-/parse-json-4.0.0.tgz#2f8bb441434d163b35fb8ffdccd7138927ffb8c0"
 
 "@types/q@^1.5.1":
   version "1.5.2"
@@ -2258,6 +2365,14 @@ babel-plugin-macros@^2.5.1:
     "@babel/runtime" "^7.4.2"
     cosmiconfig "^5.2.0"
     resolve "^1.10.0"
+
+babel-plugin-macros@^2.6.1:
+  version "2.8.0"
+  resolved "https://registry.yarnpkg.com/babel-plugin-macros/-/babel-plugin-macros-2.8.0.tgz#0f958a7cc6556b1e65344465d99111a1e5e10138"
+  dependencies:
+    "@babel/runtime" "^7.7.2"
+    cosmiconfig "^6.0.0"
+    resolve "^1.12.0"
 
 babel-plugin-named-asset-import@^0.3.2:
   version "0.3.2"
@@ -2852,13 +2967,17 @@ commander@2.17.x:
   version "2.17.1"
   resolved "https://registry.yarnpkg.com/commander/-/commander-2.17.1.tgz#bd77ab7de6de94205ceacc72f1716d29f20a77bf"
 
-commander@^2.11.0, commander@^2.19.0, commander@~2.20.0:
+commander@^2.11.0, commander@^2.19.0:
   version "2.20.0"
   resolved "https://registry.yarnpkg.com/commander/-/commander-2.20.0.tgz#d58bb2b5c1ee8f87b0d340027e9e94e222c5a422"
 
 commander@~2.19.0:
   version "2.19.0"
   resolved "https://registry.yarnpkg.com/commander/-/commander-2.19.0.tgz#f6198aa84e5b83c46054b94ddedbfed5ee9ff12a"
+
+commander@~2.20.3:
+  version "2.20.3"
+  resolved "https://registry.yarnpkg.com/commander/-/commander-2.20.3.tgz#fd485e84c03eb4881c20722ba48035e8531aeb33"
 
 common-tags@^1.8.0:
   version "1.8.0"
@@ -3012,6 +3131,16 @@ cosmiconfig@^5.0.0, cosmiconfig@^5.2.0:
     is-directory "^0.3.1"
     js-yaml "^3.13.0"
     parse-json "^4.0.0"
+
+cosmiconfig@^6.0.0:
+  version "6.0.0"
+  resolved "https://registry.yarnpkg.com/cosmiconfig/-/cosmiconfig-6.0.0.tgz#da4fee853c52f6b1e6935f41c1a2fc50bd4a9982"
+  dependencies:
+    "@types/parse-json" "^4.0.0"
+    import-fresh "^3.1.0"
+    parse-json "^5.0.0"
+    path-type "^4.0.0"
+    yaml "^1.7.2"
 
 crc@3.2.1:
   version "3.2.1"
@@ -4470,8 +4599,8 @@ handle-thing@^2.0.0:
   resolved "https://registry.yarnpkg.com/handle-thing/-/handle-thing-2.0.0.tgz#0e039695ff50c93fc288557d696f3c1dc6776754"
 
 handlebars@^4.1.2:
-  version "4.1.2"
-  resolved "https://registry.yarnpkg.com/handlebars/-/handlebars-4.1.2.tgz#b6b37c1ced0306b221e094fc7aca3ec23b131b67"
+  version "4.5.3"
+  resolved "https://registry.yarnpkg.com/handlebars/-/handlebars-4.5.3.tgz#5cf75bd8714f7605713511a56be7c349becb0482"
   dependencies:
     neo-async "^2.6.0"
     optimist "^0.6.1"
@@ -4799,6 +4928,13 @@ import-fresh@^2.0.0:
 import-fresh@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/import-fresh/-/import-fresh-3.0.0.tgz#a3d897f420cab0e671236897f75bc14b4885c390"
+  dependencies:
+    parent-module "^1.0.0"
+    resolve-from "^4.0.0"
+
+import-fresh@^3.1.0:
+  version "3.2.1"
+  resolved "https://registry.yarnpkg.com/import-fresh/-/import-fresh-3.2.1.tgz#633ff618506e793af5ac91bf48b72677e15cbe66"
   dependencies:
     parent-module "^1.0.0"
     resolve-from "^4.0.0"
@@ -5816,6 +5952,10 @@ levn@^0.3.0, levn@~0.3.0:
     prelude-ls "~1.1.2"
     type-check "~0.3.2"
 
+lines-and-columns@^1.1.6:
+  version "1.1.6"
+  resolved "https://registry.yarnpkg.com/lines-and-columns/-/lines-and-columns-1.1.6.tgz#1c00c743b433cd0a4e80758f7b64a57440d9ff00"
+
 load-json-file@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/load-json-file/-/load-json-file-2.0.0.tgz#7947e42149af80d696cbf797bcaabcfe1fe29ca8"
@@ -6295,8 +6435,8 @@ negotiator@0.6.2:
   resolved "https://registry.yarnpkg.com/negotiator/-/negotiator-0.6.2.tgz#feacf7ccf525a77ae9634436a64883ffeca346fb"
 
 neo-async@^2.5.0, neo-async@^2.6.0:
-  version "2.6.0"
-  resolved "https://registry.yarnpkg.com/neo-async/-/neo-async-2.6.0.tgz#b9d15e4d71c6762908654b5183ed38b753340835"
+  version "2.6.1"
+  resolved "https://registry.yarnpkg.com/neo-async/-/neo-async-2.6.1.tgz#ac27ada66167fa8849a6addd837f6b189ad2081c"
 
 nice-try@^1.0.4:
   version "1.0.5"
@@ -6750,6 +6890,15 @@ parse-json@^4.0.0:
     error-ex "^1.3.1"
     json-parse-better-errors "^1.0.1"
 
+parse-json@^5.0.0:
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/parse-json/-/parse-json-5.0.0.tgz#73e5114c986d143efa3712d4ea24db9a4266f60f"
+  dependencies:
+    "@babel/code-frame" "^7.0.0"
+    error-ex "^1.3.1"
+    json-parse-better-errors "^1.0.1"
+    lines-and-columns "^1.1.6"
+
 parse-link-header@^1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/parse-link-header/-/parse-link-header-1.0.1.tgz#bedfe0d2118aeb84be75e7b025419ec8a61140a7"
@@ -6821,6 +6970,10 @@ path-type@^3.0.0:
   resolved "https://registry.yarnpkg.com/path-type/-/path-type-3.0.0.tgz#cef31dc8e0a1a3bb0d105c0cd97cf3bf47f4e36f"
   dependencies:
     pify "^3.0.0"
+
+path-type@^4.0.0:
+  version "4.0.0"
+  resolved "https://registry.yarnpkg.com/path-type/-/path-type-4.0.0.tgz#84ed01c0a7ba380afe09d90a8c180dcd9d03043b"
 
 pbkdf2@^3.0.3:
   version "3.0.17"
@@ -7747,7 +7900,7 @@ react-is@^16.6.0, react-is@^16.7.0, react-is@^16.8.1, react-is@^16.8.4:
   version "16.8.6"
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.8.6.tgz#5bbc1e2d29141c9fbdfed456343fe2bc430a6a16"
 
-react-lifecycles-compat@^3.0.0:
+react-lifecycles-compat@^3.0.0, react-lifecycles-compat@^3.0.4:
   version "3.0.4"
   resolved "https://registry.yarnpkg.com/react-lifecycles-compat/-/react-lifecycles-compat-3.0.4.tgz#4f1a273afdfc8f3488a8c516bfda78f872352362"
 
@@ -8141,6 +8294,12 @@ resolve@1.10.0:
 resolve@^1.10.0, resolve@^1.3.2, resolve@^1.5.0, resolve@^1.8.1, resolve@^1.9.0:
   version "1.10.1"
   resolved "https://registry.yarnpkg.com/resolve/-/resolve-1.10.1.tgz#664842ac960795bbe758221cdccda61fb64b5f18"
+  dependencies:
+    path-parse "^1.0.6"
+
+resolve@^1.12.0:
+  version "1.14.1"
+  resolved "https://registry.yarnpkg.com/resolve/-/resolve-1.14.1.tgz#9e018c540fcf0c427d678b9931cbf45e984bcaff"
   dependencies:
     path-parse "^1.0.6"
 
@@ -9046,10 +9205,10 @@ uglify-js@3.4.x:
     source-map "~0.6.1"
 
 uglify-js@^3.1.4:
-  version "3.5.11"
-  resolved "https://registry.yarnpkg.com/uglify-js/-/uglify-js-3.5.11.tgz#833442c0aa29b3a7d34344c7c63adaa3f3504f6a"
+  version "3.7.3"
+  resolved "https://registry.yarnpkg.com/uglify-js/-/uglify-js-3.7.3.tgz#f918fce9182f466d5140f24bb0ff35c2d32dcc6a"
   dependencies:
-    commander "~2.20.0"
+    commander "~2.20.3"
     source-map "~0.6.1"
 
 underscore@, underscore@>=1.5.0:
@@ -9683,6 +9842,12 @@ xtend@^4.0.0, xtend@^4.0.1, xtend@~4.0.1:
 yallist@^3.0.0, yallist@^3.0.2:
   version "3.0.3"
   resolved "https://registry.yarnpkg.com/yallist/-/yallist-3.0.3.tgz#b4b049e314be545e3ce802236d6cd22cd91c3de9"
+
+yaml@^1.7.2:
+  version "1.7.2"
+  resolved "https://registry.yarnpkg.com/yaml/-/yaml-1.7.2.tgz#f26aabf738590ab61efaca502358e48dc9f348b2"
+  dependencies:
+    "@babel/runtime" "^7.6.3"
 
 yargs-parser@^10.0.0, yargs-parser@^10.1.0:
   version "10.1.0"
