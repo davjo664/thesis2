@@ -29,7 +29,7 @@
     "@instructure/ui-themeable": "^5",
     "@instructure/ui-themes": "^5",
     "@instructure/ui-toggle-details": "^5",
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "backbone": "1.1.1",
     "immutability-helper": "^2",
     "jquery": "https://github.com/ryankshaw/jquery.git#dadf794ebc4c4dcf94c344dab7d9341d46bc17cc",
