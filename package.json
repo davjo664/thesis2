@@ -36,7 +36,7 @@
     "jquery.cookie": "^1.4.1",
     "lodash": "^4.16.4",
     "page.js": "^4.13.3",
-    "parse-link-header": "^1",
+    "parse-link-header": "^2",
     "prop-types": "^15",
     "qs": "^6.6.0",
     "react": "^16.8.6",
