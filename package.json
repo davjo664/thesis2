@@ -38,7 +38,7 @@
     "page.js": "^4.13.3",
     "parse-link-header": "^1",
     "prop-types": "^15",
-    "qs": "^6.6.0",
+    "qs": "^6.7.3",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "react-redux": "^5.1.1",
